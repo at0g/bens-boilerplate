@@ -12,8 +12,12 @@ module.exports = function(grunt){
 
     grunt.initConfig({
 
+        indir: 'client',
+        outdir: 'public',
+        
+
         clean: {
-            'public': 'public/**/*'
+            'public': '<%= outdir %>/**/*'
         },
 
         concurrent: {
@@ -28,28 +32,28 @@ module.exports = function(grunt){
         copy: {
 
             assets: {
-                cwd: 'client',
+                cwd: '<%= indir %>',
                 expand: true,
                 src: 'assets',
-                dest: 'public'
+                dest: '<%= outdir %>'
             },
 
             scripts: {
-                cwd: 'client',
+                cwd: '<%= indir %>',
                 expand: true,
                 src: 'js/**/*',
-                dest: 'public'
+                dest: '<%= outdir %>'
             }
         },
 
         jshint: {
             dev: {
                 src: [
-                    'client/js/**/*.js'
+                    '<%= indir %>/js/**/*.js'
                 ],
                 options: {
                     ignores: [
-                        'client/js/lib/**/*.js'
+                        '<%= indir %>/js/lib/**/*.js'
                     ]
                 }
             }
@@ -64,7 +68,7 @@ module.exports = function(grunt){
                 },
 
                 files: {
-                    'public/css/styles.css': 'client/styles/styles.less'
+                    '<%= outdir %>/css/styles.css': '<%= indir %>/styles/styles.less'
                 }
             },
 
@@ -76,7 +80,7 @@ module.exports = function(grunt){
                 },
 
                 files: {
-                    'public/css/styles.css': 'client/styles/styles.less'
+                    '<%= outdir %>/css/styles.css': '<%= indir %>/styles/styles.less'
                 }
             }
         },
@@ -104,11 +108,11 @@ module.exports = function(grunt){
 
                 baseUrl: 'app',
                 // Input
-                appDir: 'client/js',
+                appDir: '<%= indir %>/js',
                 // Output
-                dir: 'public/js',
+                dir: '<%= outdir %>/js',
                 // Config
-                mainConfigFile: 'client/js/require.config.js',
+                mainConfigFile: '<%= indir %>/js/require.config.js',
 
                 preserveLicenseComments: true,
 
@@ -158,15 +162,15 @@ module.exports = function(grunt){
                 spawn: false
             },
             scripts: {
-                files: 'client/js/**/*.js',
+                files: '<%= indir %>/js/**/*.js',
                 tasks: ['jshint:dev', 'copy:scripts']
             },
             styles: {
-                files: 'client/styles/**/*',
+                files: '<%= indir %>/styles/**/*',
                 tasks: ['less:dev']
             },
             assets: {
-                files: 'client/assets/**/*',
+                files: '<%= indir %>/assets/**/*',
                 tasks: ['copy:assets']
             }
         }
