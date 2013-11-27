@@ -32,7 +32,7 @@ Project layout
 - server
     The code to run the nodejs/express dev server.
 - templates
-    Shared (client and server) templates directory. By default uses handlebars templates.
+    Shared (client and server) templates directory. By default uses handlebars templates. Mounted by express as /templates.
 
 Configuration
 =============
