@@ -1,5 +1,6 @@
 module.exports = function(grunt){
 
+    grunt.loadNpmTasks('grunt-bumpup');
     grunt.loadNpmTasks('grunt-concurrent');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
@@ -14,7 +15,10 @@ module.exports = function(grunt){
 
         indir: 'client',
         outdir: 'public',
-        
+
+        bumpup: ['package.json', 'bower.json'],
+
+        pkg: grunt.file.readJSON('package.json'),
 
         clean: {
             'public': '<%= outdir %>/**/*'
@@ -188,7 +192,6 @@ module.exports = function(grunt){
 
     });
 
-
     // Run a watch server, copying files as they change and restarting the server when server files change.
     grunt.registerTask('default', [
         'clean:public',
@@ -198,13 +201,17 @@ module.exports = function(grunt){
         'concurrent:dev'
     ]);
 
-    grunt.registerTask('test', ['jshint', 'jasmine']);
+    grunt.registerTask('updatePkg', function(){
+        grunt.config.set('pkg', grunt.file.readJSON('package.json'));
+    });
 
     grunt.registerTask('build', [
         'clean:public',
         'jshint',
         'requirejs:dev',
         'less:dev',
-        'concurrent:dev'
+        'concurrent:dev',
+        'bumpup:prerelease',
+        'updatePkg'
     ]);
 };
